@@ -85,7 +85,11 @@ It can search the web, run quick LLM transforms (summarize/extract/outline), and
 ## FAQ
 
 - **Do I need Anthropic/Gemini?** No — AI Pipe alone satisfies the project.  
+<<<<<<< HEAD
 - **Cheapest model?** Typically `gpt-5-nano` via AI Pipe.
+=======
+- **Most cost effective model?** Typically `gpt-5-mini` via AI Pipe.
+>>>>>>> 49ad5bc1adb697c0cfd147f7cf2cb7637bf088a5
 
 ---
 
