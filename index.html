@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LLM Agent POC — AI Pipe</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome (icons for copy etc.) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <!-- Prism (optional: for pretty JSON/code in cards) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container py-4">
+    <header class="mb-3">
+      <h1 class="h3 mb-1">Browser LLM Agent (AI Pipe)</h1>
+      <p class="text-secondary mb-0">OpenAI-style tool calls with AI Pipe + browser tools.</p>
+    </header>
+
+    <!-- Alerts -->
+    <div id="alerts" class="mb-3"></div>
+
+    <!-- Config -->
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+          <h2 class="h5 mb-0">Configuration</h2>
+          <div class="d-flex gap-2">
+            <button id="saveConfig" class="btn btn-sm btn-primary">
+              <i class="fa-solid fa-floppy-disk me-1"></i>Save
+            </button>
+            <button id="resetConfig" class="btn btn-sm btn-outline-secondary">
+              <i class="fa-solid fa-rotate me-1"></i>Reset
+            </button>
+            <button id="helpBtn" class="btn btn-sm btn-outline-info">
+              <i class="fa-solid fa-circle-question me-1"></i>Help
+            </button>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-sm-4">
+            <label class="form-label">Model</label>
+            <input id="model" class="form-control" placeholder="e.g. gpt-4.1-nano">
+            <div class="form-text">AI Pipe proxies OpenAI at <code>https://aipipe.org/openai/v1</code>.</div>
+          </div>
+
+          <div class="col-sm-4">
+            <label class="form-label">AI Pipe Token</label>
+            <input id="aiPipeToken" class="form-control" placeholder="Get from https://aipipe.org/login" />
+          </div>
+
+          <div class="col-sm-4">
+            <label class="form-label">AI Pipe URL (optional)</label>
+            <input id="aiPipeUrl" class="form-control" placeholder="Custom workflow endpoint (POST {workflow,data})" />
+            <div class="form-text">Used by the <code>ai_pipe</code> tool if set.</div>
+          </div>
+
+          <div class="col-sm-4">
+            <label class="form-label">Google CSE ID (optional)</label>
+            <input id="googleCseId" class="form-control" placeholder="cx=..." />
+          </div>
+          <div class="col-sm-4">
+            <label class="form-label">Google API Key (optional)</label>
+            <input id="googleApiKey" class="form-control" placeholder="AIza..." />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conversation -->
+    <div class="card mb-3">
+      <div class="card-body">
+        <div id="conversation" class="conversation"></div>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div class="input-group">
+      <textarea id="userInput" class="form-control" rows="2" placeholder="Type a message or instruction..."></textarea>
+      <button id="sendBtn" class="btn btn-success">
+        <i class="fa-solid fa-paper-plane me-1"></i>Send
+      </button>
+    </div>
+  </div>
+
+  <!-- Hidden sandboxed iframe for JS execution -->
+  <iframe id="sandbox" class="d-none"
+          sandbox="allow-scripts"
+          referrerpolicy="no-referrer"
+          srcdoc="<!doctype html><html><head><meta charset='utf-8'></head><body>
+<script>
+(function(){
+  const makeSafeConsole = () => {
+    const logs = [];
+    const proxy = {};
+    ['log','info','warn','error'].forEach(fn=>{
+      proxy[fn] = (...args)=>{ logs.push({level:fn, args}); };
+    });
+    return {logs, console:proxy};
+  };
+
+  const run = async (code) => {
+    const {logs, console} = makeSafeConsole();
+    let result = null, error = null;
+    try {
+      const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
+      const fn = new AsyncFunction('console', code);
+      result = await fn(console);
+    } catch (e) {
+      error = String(e && e.message ? e.message : e);
+    }
+    return {logs, result, error};
+  };
+
+  window.addEventListener('message', async (ev)=>{
+    const data = ev.data || {};
+    if (data && data.type === 'EXEC_JS' && typeof data.code === 'string') {
+      const out = await run(data.code);
+      parent.postMessage({type:'EXEC_JS_RESULT', id:data.id, ...out}, '*');
+    }
+  });
+})();
+</script>
+</body></html>"></iframe>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="agent.js"></script>
+</body>
+</html>

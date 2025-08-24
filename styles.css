@@ -1,0 +1,41 @@
+:root {
+  --bg: #0f1115;
+  --card: #171a21;
+  --text: #e7eaf0;
+  --muted: #a7b0c0;
+  --accent: #3ea6ff;
+  --border: #2a2f3a;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  background: var(--card);
+  border-color: var(--border);
+}
+
+.form-control, .form-select {
+  background: #10131a;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.conversation {
+  min-height: 40vh;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.msg { padding: .5rem .75rem; border-radius: .5rem; margin-bottom: .75rem; }
+.msg-user { background: rgba(62,166,255, .06); border: 1px solid var(--border); }
+.msg-assistant { background: rgba(100, 255, 218, .05); border: 1px solid var(--border); }
+.msg-tool { background: rgba(255, 255, 255, .03); border: 1px dashed var(--border); }
+
+.tool-card .card-header { background: rgba(255,255,255,.04); }
+
+.search-item a { word-break: break-all; }
+
+pre, code { color: #e7eaf0; }
