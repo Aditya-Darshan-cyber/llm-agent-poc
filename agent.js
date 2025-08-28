@@ -22,7 +22,7 @@ const els = {
 
 // --- Config ---
 const defaultConfig = {
-  model: 'gpt-5-mini',
+  model: 'gpt-4.1-mini',
   aiPipeToken: '',
   aiPipeUrl: '',
   googleCseId: '',
@@ -56,7 +56,7 @@ function resetConfig() {
 
 function getCfg() {
   return {
-    model: els.model.value.trim() || 'gpt-5-mini',
+    model: els.model.value.trim() || 'gpt-4.1-mini',
     aiPipeToken: els.aiPipeToken.value.trim(),
     aiPipeUrl: els.aiPipeUrl.value.trim(),
     googleCseId: els.googleCseId.value.trim(),
@@ -284,7 +284,7 @@ async function tool_ai_pipe(args) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: model || 'gpt-5-mini',
+          model: model || 'gpt-4.1-mini',
           input: buildTransformPrompt(workflow, data)
         })
       });
