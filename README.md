@@ -35,7 +35,7 @@ It can search the web, run quick LLM transforms (summarize/extract/outline), and
      Open http://localhost:8080
 
 3. **Configure (in the app)**  
-   - **Model:** e.g. `gpt-5-nano` (cheap) or `gpt-5-mini`  
+   - **Model:** e.g. `gpt-4.1-nano` (cheap) or `gpt-4.1-mini`  
    - **AI Pipe Token:** paste your token  
    - **AI Pipe URL (optional):** your workflow endpoint (POST `{workflow, data}`)  
    - **Google CSE ID / API Key (optional):** for higher-quality search  
@@ -65,7 +65,7 @@ It can search the web, run quick LLM transforms (summarize/extract/outline), and
 
 | Field           | Required | Notes                                           |
 |-----------------|----------|-------------------------------------------------|
-| Model           | Yes      | `gpt-5-nano` (cheap) or `gpt-5-mini`, etc.  |
+| Model           | Yes      | `gpt-4.1-nano` (cheap) or `gpt-4.1-mini`, etc.  |
 | AI Pipe Token   | Yes      | From https://aipipe.org/login                   |
 | AI Pipe URL     | No       | If set, `ai_pipe` POSTs `{workflow, data}`     |
 | Google CSE ID   | No       | With API key for Google Custom Search           |
@@ -86,9 +86,9 @@ It can search the web, run quick LLM transforms (summarize/extract/outline), and
 
 - **Do I need Anthropic/Gemini?** No — AI Pipe alone satisfies the project.  
 <<<<<<< HEAD
-- **Cheapest model?** Typically `gpt-5-nano` via AI Pipe.
+- **Cheapest model?** Typically `gpt-4.1-nano` via AI Pipe.
 =======
-- **Most cost effective model?** Typically `gpt-5-mini` via AI Pipe.
+- **Most cost effective model?** Typically `gpt-4.1-mini` via AI Pipe.
 >>>>>>> 49ad5bc1adb697c0cfd147f7cf2cb7637bf088a5
 
 ---
